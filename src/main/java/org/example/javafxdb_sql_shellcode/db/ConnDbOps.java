@@ -4,6 +4,8 @@
  */
 package org.example.javafxdb_sql_shellcode.db;
 
+import org.example.javafxdb_sql_shellcode.Person;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -138,6 +140,27 @@ public class ConnDbOps {
 
             if (row > 0) {
                 System.out.println("A new user was inserted successfully.");
+            }
+
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public  void deleteUserByName(String name) {
+
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+            String sql = "Delete users WHERE name = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+
+            int row = preparedStatement.executeUpdate();
+
+            if (row == 0) {
+                System.out.println("A user was deleted successfully.");
             }
 
             preparedStatement.close();
